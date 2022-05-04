@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
 
-const Form = ({ user, setUser }) => {
+const Form = ({
+  input,
+  setInput,
+  user,
+  setUser,
+  editBtn,
+  isEditItem,
+  setEditBtn,
+  setIsEditItem,
+}) => {
   // Function to get data from Local storage
-
-  const [input, setInput] = useState({
-    userName: '',
-    email: '',
-    phone: '',
-  });
 
   const inputHandler = (e) => {
     let name = e.target.name;
@@ -31,9 +34,25 @@ const Form = ({ user, setUser }) => {
       toast.error('Please Enter Valid Number');
     } else {
       toast.success('User Added Successfully');
+
       const newUser = { ...input, id: new Date().getTime().toString() };
       setUser([...user, newUser]);
       setInput({ ...input, userName: '', email: '', phone: '' });
+    }
+    if (!input) {
+      return;
+    } else if (input && !editBtn) {
+      setUser(
+        user.map((elem) => {
+          if (elem.id === isEditItem) {
+            return { ...elem, ...input };
+          }
+          return elem;
+        })
+      );
+      setEditBtn(true);
+      setInput({ ...input, userName: '', email: '', phone: '' });
+      setIsEditItem(null);
     }
   };
 
@@ -82,10 +101,15 @@ const Form = ({ user, setUser }) => {
           onChange={inputHandler}
         />
         <br />
-
-        <button type="submit" className="btn btn-success btn-md">
-          Add
-        </button>
+        {!editBtn ? (
+          <button type="submit" className="btn btn-success btn-md">
+            Update
+          </button>
+        ) : (
+          <button type="submit" className="btn btn-success btn-md">
+            ADD
+          </button>
+        )}
       </form>
     </div>
   );

@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { Droppable } from 'react-beautiful-dnd';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { toast } from 'react-toastify';
 import { FiEdit, FiTrash } from 'react-icons/fi';
 
-const Table = ({ user, setUser }) => {
+const Table = ({ user, setUser, edituser, toggleHandler }) => {
   //Handling Drag and Drop
   const handleDragEnd = (results) => {
     if (!results.destination) return;
@@ -24,18 +24,9 @@ const Table = ({ user, setUser }) => {
     setUser(filtereduser);
   };
 
-  // Function Edit User
-  const edituser = (id) => {
-    console.log(id);
-    let editUser = user.find((elem) => {
-      return elem.id === id;
-    });
-
-    console.log(editUser);
-  };
-
   return (
     <div className="view-container">
+      <h1>User</h1>
       {user.length > 0 && (
         <div className="table-responsive-sm">
           <DragDropContext onDragEnd={(results) => handleDragEnd(results)}>
@@ -45,6 +36,7 @@ const Table = ({ user, setUser }) => {
                   <th>Name</th>
                   <th>Email</th>
                   <th>Phone</th>
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -67,6 +59,15 @@ const Table = ({ user, setUser }) => {
                             <td>{user.userName}</td>
                             <td>{user.email}</td>
                             <td>{user.phone}</td>
+                            <td>
+                              <label className="switch">
+                                <input
+                                  type="checkbox"
+                                  onClick={toggleHandler}
+                                />
+                                <span className="slider round"></span>
+                              </label>
+                            </td>
                             <td>
                               <span
                                 className="edit"
@@ -96,7 +97,7 @@ const Table = ({ user, setUser }) => {
           </button>
         </div>
       )}
-      {user.length < 1 && <div>No User Added</div>}
+      {user.length < 1 && <div className="text-center">No User Added</div>}
     </div>
   );
 };

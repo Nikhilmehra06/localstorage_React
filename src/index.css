@@ -1,14 +1,5 @@
-.delete-btn {
-  color: red;
-  cursor: pointer;
-  margin: 10px;
-}
-.edit {
-  color: gray;
-  margin: 10px;
-  cursor: pointer;
-}
-
-tbody {
-  margin-top: 25px;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
